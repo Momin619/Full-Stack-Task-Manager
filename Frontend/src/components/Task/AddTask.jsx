@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { api } from "../../axios/api";
 import { useNavigate } from "react-router-dom";
-
-export default function Signup() {
+import Loading from "../ui/Loading";
+export default function AddTask() {
   const redirect = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: "",
+    task: "",
     date: "",
   });
 
   const handleAddTask = async (e) => {
+    setLoading(true);
     e.preventDefault(); // 🚀 prevent default GET form submission
     try {
       await api.post("/add-task", form);
       redirect("/tasks");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -24,6 +27,8 @@ export default function Signup() {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="min-h-screen flex items-center justify-center ">
@@ -42,7 +47,7 @@ export default function Signup() {
           </label>
           <input
             onChange={handleInput}
-            value={form.name}
+            value={form.task}
             className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
             type="text"
             id="task"
@@ -54,7 +59,7 @@ export default function Signup() {
         {/* Age */}
         <div className="flex flex-col gap-1">
           <label htmlFor="date" className="text-gray-700 font-medium">
-            Age
+            Task Date
           </label>
           <input
             onChange={handleInput}

@@ -17,7 +17,7 @@ export default function Navbar() {
     if (location.pathname.includes("login")) setActive("login");
     else if (location.pathname.includes("signup")) setActive("signup");
     else if (location.pathname.includes("tasks")) setActive("tasks");
-    else if (location.pathname.includes("add-tasks")) setActive("add-tasks");
+    else if (location.pathname.includes("add-task")) setActive("add-task");
     else setActive(null);
   }, [location.pathname]);
 
@@ -68,9 +68,9 @@ export default function Navbar() {
         Tasks
       </Link>
       <Link
-        to="/add-tasks"
-        onClick={() => setActive("add-tasks")}
-        className={getLinkClasses("add-tasks")}
+        to="/add-task"
+        onClick={() => setActive("add-task")}
+        className={getLinkClasses("add-task")}
       >
         Add Task
       </Link>

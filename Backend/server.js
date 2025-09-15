@@ -2,6 +2,7 @@ import express from "express";
 import env from "dotenv";
 import mongoose from "mongoose";
 import { userRouter } from "./routes/user.js";
+import { taskRouter } from "./routes/task.js";
 import cors from "cors";
 import session from "express-session";
 import mongoDbStore from "connect-mongodb-session";
@@ -58,7 +59,7 @@ app.use(
 
 // Register your user routes
 app.use(userRouter);
-
+app.use(taskRouter);
 // Connect to MongoDB
 mongoose
   .connect(MONGO_URI)
