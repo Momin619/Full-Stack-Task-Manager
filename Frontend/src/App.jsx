@@ -4,8 +4,19 @@ import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import TaskPage from "./pages/Task";
 import { Routes, Route } from "react-router-dom";
-
+import AddTaskPage from "./pages/AddTask";
+import { UserContext } from "./context/UserContext";
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 export default function App() {
+  const redirect = useNavigate();
+  const { isLoggedIn, user } = useContext(UserContext);
+  useEffect(() => {
+    if (!isLoggedIn) {
+      redirect("/signup");
+    }
+  }, [isLoggedIn]);
+
   return (
     <>
       {" "}
@@ -14,6 +25,7 @@ export default function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/tasks" element={<TaskPage />} />
+        <Route path="/add-task" element={<AddTaskPage />} />
       </Routes>{" "}
     </>
   );

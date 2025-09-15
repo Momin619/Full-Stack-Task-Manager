@@ -50,6 +50,13 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  if (req.session.user === null || !req.session.isLoggedIn) {
+    return res.json({ user: null, isLoggedIn: false, redirectTo: "/signup" });
+  }
+  next();
+});
+
 // Register your user routes
 app.use(userRouter);
 

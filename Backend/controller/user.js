@@ -28,8 +28,11 @@ export const postLogin = async (req, res, next) => {
     };
 
     req.session.user = sessionData;
+    req.session.isLoggedIn = true;
     await req.session.save();
-    return res.status(200).json({ user: sessionData });
+    return res
+      .status(200)
+      .json({ user: sessionData, isLoggedIn: req.session.isLoggedIn });
   } catch (error) {
     console.log(error);
   }
@@ -39,6 +42,21 @@ export const getSession = (req, res, next) => {
   if (req.session.user) {
     return res.json({ user: req.session.user, isLoggedIn: true });
   } else {
-    return res.json({ user: null, isLoggedIn: false });
+    return res.json({ user: null, isLoggedIn: false, redirectTo: "/signup" });
+  }
+};
+
+export const postLogout = async (req, res, next) => {
+  try {
+    req.session.user = null;
+    req.session.isLoggedIn = false;
+    await req.session.save();
+    return res.status(200).json({
+      user: req.session.user,
+      isLoggedIn: req.session.isLoggedIn,
+      redirectTo: "/signup",
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

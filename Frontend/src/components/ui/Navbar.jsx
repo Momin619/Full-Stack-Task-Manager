@@ -1,13 +1,22 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from "../../context/UserContext"; // adjust path
-
+import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+// adjust path
+import { api } from "../../axios/api";
 export default function Navbar() {
-  const { user, setUser } = useContext(UserContext);
+  const redirect = useNavigate();
+  const { user, isLoggedIn, setUser, setIsLoggedIn } = useContext(UserContext);
 
-  const handleLogout = () => {
-    setUser(null); // clear user
-    // optionally remove from localStorage/session
+  const handleLogout = async () => {
+    try {
+      const res = await api.post("/logout");
+      setIsLoggedIn(res.data.isLoggedIn);
+      setUser(res.data.user);
+      redirect(res.data.redirectTo);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -19,11 +28,7 @@ export default function Navbar() {
 
       {/* Links */}
       <div className="hidden md:flex items-center gap-6 font-medium">
-        <Link to="/tasks" className="hover:text-gray-200 transition">
-          Tasks
-        </Link>
-
-        {!user ? (
+        {!isLoggedIn ? (
           <>
             <Link to="/login" className="hover:text-gray-200 transition">
               Login
@@ -37,6 +42,12 @@ export default function Navbar() {
           </>
         ) : (
           <>
+            <Link to="/tasks" className="hover:text-gray-200 transition">
+              Tasks
+            </Link>
+            <Link to="/add-task" className="hover:text-gray-200 transition">
+              Add Task
+            </Link>
             <span className="font-semibold">Hi, {user.name}</span>
             <button
               onClick={handleLogout}

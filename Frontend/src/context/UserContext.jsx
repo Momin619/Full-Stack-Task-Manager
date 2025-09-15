@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { api } from "../axios/api";
+import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
 
 export default function UserProvider({ children }) {
@@ -9,8 +10,9 @@ export default function UserProvider({ children }) {
   const fetchSession = async () => {
     try {
       const res = await api.get("/get-session", { withCredentials: true });
+      console.log(res.data);
       if (res.data.isLoggedIn) {
-        setIsLoggedIn(true);
+        setIsLoggedIn(res.data.isLoggedIn);
         setUser(res.data.user);
       } else {
         setUser(null);
