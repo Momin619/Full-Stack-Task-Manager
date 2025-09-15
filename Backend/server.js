@@ -25,6 +25,12 @@ store.on("error", (error) => {
 
 const app = express();
 
+app.use((req, res, next) => {
+  console.log("Method is ", req.method);
+  console.log("URL is ", req.url);
+  next();
+});
+
 app.use(express.json());
 
 // Enable CORS for your frontend
@@ -49,13 +55,6 @@ app.use(
     },
   })
 );
-
-app.use((req, res, next) => {
-  if (req.session.user === null || !req.session.isLoggedIn) {
-    return res.json({ user: null, isLoggedIn: false, redirectTo: "/signup" });
-  }
-  next();
-});
 
 // Register your user routes
 app.use(userRouter);

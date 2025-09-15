@@ -6,17 +6,18 @@ import TaskPage from "./pages/Task";
 import { Routes, Route } from "react-router-dom";
 import AddTaskPage from "./pages/AddTask";
 import { UserContext } from "./context/UserContext";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "./axios/api";
+import Loading from "./components/ui/Loading";
 export default function App() {
   const redirect = useNavigate();
-  const { isLoggedIn, user } = useContext(UserContext);
+  const { user, isLoggedIn } = useContext(UserContext);
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || user === null) {
       redirect("/signup");
     }
-  }, [isLoggedIn]);
-
+  }, []);
   return (
     <>
       {" "}

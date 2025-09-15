@@ -2,25 +2,32 @@ import React, { useState, useContext } from "react";
 import { api } from "../../axios/api";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import Loading from "../ui/Loading";
+
 export default function Login() {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, setIsLoggedIn } = useContext(UserContext);
   const redirect = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault(); // 🚀 prevent default GET form submission
+    setLoading(true);
     try {
-      await api.post("/login", form);
+      const res = await api.post("/login", form);
 
       console.log("user session is ", user);
-
+      setUser(res.data.user);
+      setIsLoggedIn(res.data.isLoggedIn);
       redirect("/tasks");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,6 +35,7 @@ export default function Login() {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+  if (loading) return <Loading />;
 
   return (
     <div className="min-h-screen flex items-center justify-center ">

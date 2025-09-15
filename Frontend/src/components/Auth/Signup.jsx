@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../../axios/api";
 import { useNavigate } from "react-router-dom";
-
+import Loading from "../ui/Loading";
 export default function Signup() {
   const redirect = useNavigate();
 
@@ -12,13 +12,18 @@ export default function Signup() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleSignUp = async (e) => {
     e.preventDefault(); // 🚀 prevent default GET form submission
+    setLoading(true);
     try {
       await api.post("/signup", form);
       redirect("/login");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -26,6 +31,8 @@ export default function Signup() {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="min-h-screen flex items-center justify-center ">
