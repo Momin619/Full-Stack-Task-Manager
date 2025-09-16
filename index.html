@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date vs DateTimeLocal</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 20px;
+      }
+      label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+      }
+      input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Date only -->
+    <div>
+      <label for="date">Pick a Date</label>
+      <input type="date" id="date" name="date" />
+    </div>
+
+    <!-- Date + Time -->
+    <div>
+      <label for="datetime">Pick Date & Time</label>
+      <input type="datetime-local" id="datetime" name="datetime" />
+    </div>
+  </body>
+</html>

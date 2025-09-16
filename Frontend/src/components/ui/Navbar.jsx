@@ -84,7 +84,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="bg-green-500 text-white px-6 py-4 flex items-center justify-between shadow-md">
+    <nav className=" fixed top-0 w-full  bg-green-500 text-white px-6 py-4 flex items-center justify-between shadow-md">
       <h1 className="font-bold text-lg">My App</h1>
       <div className="flex gap-4">
         {isLoggedIn ? renderLinks() : renderAuthLinks()}
